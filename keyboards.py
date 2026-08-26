@@ -2,7 +2,27 @@
 from telebot import types
 import config
 
-# 1. Главное меню
+
+def _nav_buttons(back_callback='back_to_main'):
+    """Кнопки навигации: назад, главное меню, смена города."""
+    return [
+        types.InlineKeyboardButton("⬅️ Назад", callback_data=back_callback),
+        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main'),
+        types.InlineKeyboardButton("🔄 Сменить город", callback_data='back_to_city'),
+    ]
+
+
+# 0. Выбор города
+def create_city_selection_menu():
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(
+        types.InlineKeyboardButton("Костанай", callback_data='city_kostanay'),
+        types.InlineKeyboardButton("Ташкент", callback_data='city_tashkent'),
+    )
+    return markup
+
+
+# 1. Главное меню Костаная
 def create_main_menu():
     """Создает главное меню."""
     markup = types.InlineKeyboardMarkup(row_width=1)
@@ -15,7 +35,84 @@ def create_main_menu():
         types.InlineKeyboardButton("6. Загородная недвижимость", callback_data='menu_6'), 
         types.InlineKeyboardButton("7. Маркетинг", callback_data='menu_7'),
         types.InlineKeyboardButton("8. Прайс-лист на услуги компании", url=config.PRICELIST_URL),
-        types.InlineKeyboardButton("9. УТП Компании", url=config.UTP_URL)
+        types.InlineKeyboardButton("9. УТП Компании", url=config.UTP_URL),
+        types.InlineKeyboardButton("🔄 Сменить город", callback_data='back_to_city'),
+    )
+    return markup
+
+
+# 1. Главное меню Ташкента
+def create_tashkent_main_menu():
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(
+        types.InlineKeyboardButton("Прайс Ташкент", url=config.TASHKENT_PRICELIST_URL),
+        types.InlineKeyboardButton("УТП", url=config.TASHKENT_UTP_URL),
+        types.InlineKeyboardButton("Чек Листы", callback_data='tashkent_checklists'),
+        types.InlineKeyboardButton("Маркетинг", callback_data='tashkent_marketing'),
+        types.InlineKeyboardButton("Текущие новостройки", callback_data='tashkent_new_buildings'),
+        types.InlineKeyboardButton("Юридический блок", callback_data='tashkent_legal'),
+        types.InlineKeyboardButton("🔄 Сменить город", callback_data='back_to_city'),
+    )
+    return markup
+
+
+def create_tashkent_checklists_menu():
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(
+        types.InlineKeyboardButton("ЧЕК ЛИСТ Коммерция", url=config.TASHKENT_CHECKLIST_COMMERCE_URL),
+        types.InlineKeyboardButton("ЧЕК ЛИСТ Загородной недвижимости", url=config.TASHKENT_CHECKLIST_RURAL_URL),
+        types.InlineKeyboardButton("ЧЕК ЛИСТ Вторичка", url=config.TASHKENT_CHECKLIST_SECONDARY_URL),
+        types.InlineKeyboardButton("ЧЕК ЛИСТ Покупатель", url=config.TASHKENT_CHECKLIST_BUYER_URL),
+        *_nav_buttons(),
+    )
+    return markup
+
+
+def create_tashkent_marketing_menu():
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(
+        types.InlineKeyboardButton("Где найти клиента", url=config.TASHKENT_MARKETING_CLIENTS_URL),
+        types.InlineKeyboardButton("Формирование входящего потока риелтора", url=config.TASHKENT_MARKETING_INFLOW_URL),
+        types.InlineKeyboardButton("Макеты на расклейку", url=config.TASHKENT_MARKETING_PASTE_LAYOUTS_URL),
+        types.InlineKeyboardButton("Макеты для СОЦ. СЕТЕЙ", callback_data='tashkent_social_layouts'),
+        types.InlineKeyboardButton("Ссылка на отзывы", url=config.TASHKENT_REVIEWS_URL),
+        *_nav_buttons(),
+    )
+    return markup
+
+
+def create_tashkent_social_layouts_menu():
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    for i, url in enumerate(config.TASHKENT_MARKETING_SOCIAL_URLS, start=1):
+        markup.add(types.InlineKeyboardButton(f"Макеты для соц. сетей {i}", url=url))
+    markup.add(
+        types.InlineKeyboardButton("⬅️ Назад", callback_data='back_to_tashkent_marketing'),
+        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main'),
+        types.InlineKeyboardButton("🔄 Сменить город", callback_data='back_to_city'),
+    )
+    return markup
+
+
+def create_tashkent_new_buildings_menu():
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(
+        types.InlineKeyboardButton("NRG BI", callback_data='tashkent_jk_nrg_bi'),
+        types.InlineKeyboardButton("AL-BINA", callback_data='tashkent_jk_al_bina'),
+        *_nav_buttons(),
+    )
+    return markup
+
+
+def create_tashkent_legal_menu():
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(
+        types.InlineKeyboardButton("Агентский Договор продавец", url=config.TASHKENT_AGREEMENT_SELLER_URL),
+        types.InlineKeyboardButton("Агентский Договор покупатель", url=config.TASHKENT_AGREEMENT_BUYER_URL),
+        types.InlineKeyboardButton("Договор Жилой Аренды", url=config.TASHKENT_LEASE_AGREEMENT_URL),
+        types.InlineKeyboardButton("Акт выполненных услуг", url=config.TASHKENT_ACT_SERVICES_URL),
+        types.InlineKeyboardButton("Акт осмотра", url=config.TASHKENT_ACT_INSPECTION_URL),
+        types.InlineKeyboardButton("Соглашение о задатке", url=config.TASHKENT_DEPOSIT_AGREEMENT_URL),
+        *_nav_buttons(),
     )
     return markup
 

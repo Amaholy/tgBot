@@ -3,24 +3,96 @@ from telebot import types, TeleBot
 import config
 import keyboards
 
+
+def get_user_city(user_id: int, user_city: dict) -> str:
+    return user_city.get(user_id, config.CITY_KOSTANAY)
+
+
 # --- ФУНКЦИИ ОТОБРАЖЕНИЯ МЕНЮ ---
 
-def show_main_menu(bot: TeleBot, chat_id: int, message_id: int=None):
-    """Показывает Главное меню."""
-    main_menu_text = (
-        "Прокачайте свои навыки! Выберите что вам нужно:\n"
-    )
-    markup = keyboards.create_main_menu()
+def show_city_selection(bot: TeleBot, chat_id: int, message_id: int = None):
+    text = "Выберите город:"
+    markup = keyboards.create_city_selection_menu()
     if message_id:
         bot.edit_message_text(
-            chat_id=chat_id,
-            message_id=message_id,
-            text=main_menu_text,
-            reply_markup=markup,
-            parse_mode='Markdown'
+            chat_id=chat_id, message_id=message_id,
+            text=text, reply_markup=markup, parse_mode='Markdown'
+        )
+    else:
+        bot.send_message(chat_id, text, reply_markup=markup, parse_mode='Markdown')
+
+
+def show_main_menu(bot: TeleBot, chat_id: int, user_id: int, user_city: dict, message_id: int = None):
+    """Показывает главное меню выбранного города."""
+    city = get_user_city(user_id, user_city)
+
+    if city == config.CITY_TASHKENT:
+        main_menu_text = "Прокачайте свои навыки! Выберите что вам нужно:\n"
+        markup = keyboards.create_tashkent_main_menu()
+    else:
+        main_menu_text = "Прокачайте свои навыки! Выберите что вам нужно:\n"
+        markup = keyboards.create_main_menu()
+
+    if message_id:
+        bot.edit_message_text(
+            chat_id=chat_id, message_id=message_id,
+            text=main_menu_text, reply_markup=markup, parse_mode='Markdown'
         )
     else:
         bot.send_message(chat_id, main_menu_text, reply_markup=markup, parse_mode='Markdown')
+
+
+def show_tashkent_checklists_menu(bot: TeleBot, call: types.CallbackQuery):
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
+    text = "Вы в разделе **Чек Листы**."
+    markup = keyboards.create_tashkent_checklists_menu()
+    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=text, reply_markup=markup, parse_mode='Markdown')
+
+
+def show_tashkent_marketing_menu(bot: TeleBot, call: types.CallbackQuery):
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
+    text = "Вы в разделе **Маркетинг**."
+    markup = keyboards.create_tashkent_marketing_menu()
+    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=text, reply_markup=markup, parse_mode='Markdown')
+
+
+def show_tashkent_social_layouts_menu(bot: TeleBot, call: types.CallbackQuery):
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
+    text = "Вы в разделе **Макеты для СОЦ. СЕТЕЙ**."
+    markup = keyboards.create_tashkent_social_layouts_menu()
+    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=text, reply_markup=markup, parse_mode='Markdown')
+
+
+def show_tashkent_new_buildings_menu(bot: TeleBot, call: types.CallbackQuery):
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
+    text = "Вы в разделе **Текущие новостройки**."
+    markup = keyboards.create_tashkent_new_buildings_menu()
+    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=text, reply_markup=markup, parse_mode='Markdown')
+
+
+def show_tashkent_legal_menu(bot: TeleBot, call: types.CallbackQuery):
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
+    text = "Вы в разделе **Юридический блок**."
+    markup = keyboards.create_tashkent_legal_menu()
+    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=text, reply_markup=markup, parse_mode='Markdown')
+
+
+def show_tashkent_jk_placeholder(bot: TeleBot, call: types.CallbackQuery, jk_name: str):
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
+    text = f"**{jk_name}** — информация появится позже."
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(
+        types.InlineKeyboardButton("⬅️ Назад", callback_data='tashkent_new_buildings'),
+        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main'),
+        types.InlineKeyboardButton("🔄 Сменить город", callback_data='back_to_city'),
+    )
+    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=text, reply_markup=markup, parse_mode='Markdown')
 
 # 2. Меню "2. Юридический блок" - Уровень 1 (L1)
 def show_legal_menu_l1(bot: TeleBot, call: types.CallbackQuery):
@@ -211,26 +283,34 @@ def show_placeholder(bot: TeleBot, call: types.CallbackQuery):
     """Отображает заглушку для нереализованных пока пунктов."""
     chat_id = call.message.chat.id
     message_id = call.message.message_id
-    placeholder_text = f"Этот раздел находится в разработке. Выберите **Главное меню** для продолжения."
+    placeholder_text = "Этот раздел находится в разработке. Выберите **Главное меню** для продолжения."
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
-        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main')
+        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main'),
+        types.InlineKeyboardButton("🔄 Сменить город", callback_data='back_to_city'),
     )
     bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=placeholder_text, reply_markup=markup, parse_mode='Markdown')
 
 
 # --- ОСНОВНЫЕ ОБРАБОТЧИКИ СООБЩЕНИЙ ---
 
-def send_welcome(bot: TeleBot, message: types.Message, user_authenticated: dict):
+def send_welcome(bot: TeleBot, message: types.Message, user_authenticated: dict, user_city: dict):
     """Обработчик команды /start."""
     chat_id = message.chat.id
     user_id = message.from_user.id
     user_authenticated[user_id] = False
+    user_city.pop(user_id, None)
     welcome_text = (
         "Вас приветствует бот V.E.R.A.! Для дальнейшей работы **введите код доступа**! "
         "Для подсказки нажмите /help"
     )
     bot.send_message(chat_id, welcome_text, parse_mode='Markdown')
+
+
+def send_myid(bot: TeleBot, message: types.Message):
+    """Показывает Telegram ID пользователя."""
+    user_id = message.from_user.id
+    bot.send_message(message.chat.id, f"Ваш Telegram ID: `{user_id}`", parse_mode='Markdown')
 
 def send_help(bot: TeleBot, message: types.Message):
     """Обработчик команды /help."""
@@ -238,32 +318,34 @@ def send_help(bot: TeleBot, message: types.Message):
     help_text = "Код был отправлен в общем чате"
     bot.send_message(chat_id, help_text)
 
-def send_goodbye(bot: TeleBot, message: types.Message, user_authenticated: dict):
+def send_goodbye(bot: TeleBot, message: types.Message, user_authenticated: dict, user_city: dict):
     """Обработчик команды /stop."""
     chat_id = message.chat.id
     user_id = message.from_user.id
     if user_authenticated.get(user_id):
         user_authenticated[user_id] = False
+        user_city.pop(user_id, None)
         goodbye_text = "🚪 Сеанс завершен. Вы вышли из системы. Чтобы начать заново, введите /start."
     else:
         goodbye_text = "Вы уже не авторизованы. Для начала работы введите /start."
     bot.send_message(chat_id, goodbye_text)
 
-def handle_access_code(bot: TeleBot, message: types.Message, user_authenticated: dict):
+
+def handle_access_code(bot: TeleBot, message: types.Message, user_authenticated: dict, user_city: dict):
     """Обработчик ввода кода доступа."""
     chat_id = message.chat.id
     user_id = message.from_user.id
-    
+
     if message.text == config.ACCESS_CODE:
-        user_authenticated[user_id] = True 
-        show_main_menu(bot, chat_id)
+        user_authenticated[user_id] = True
+        show_city_selection(bot, chat_id)
     else:
         bot.send_message(chat_id, "❌ Неверный код доступа. Пожалуйста, попробуйте снова.")
 
 
 # --- ОБРАБОТЧИК INLINE-КНОПОК ---
 
-def callback_handler(bot: TeleBot, call: types.CallbackQuery, user_authenticated: dict):
+def callback_handler(bot: TeleBot, call: types.CallbackQuery, user_authenticated: dict, user_city: dict):
     """Обрабатывает нажатия инлайн-кнопок."""
     user_id = call.from_user.id
 
@@ -273,11 +355,43 @@ def callback_handler(bot: TeleBot, call: types.CallbackQuery, user_authenticated
         return
 
     bot.answer_callback_query(call.id)
-    
+
+    # --- ВЫБОР ГОРОДА ---
+    if call.data == 'city_kostanay':
+        user_city[user_id] = config.CITY_KOSTANAY
+        show_main_menu(bot, call.message.chat.id, user_id, user_city, call.message.message_id)
+    elif call.data == 'city_tashkent':
+        user_city[user_id] = config.CITY_TASHKENT
+        show_main_menu(bot, call.message.chat.id, user_id, user_city, call.message.message_id)
+    elif call.data == 'back_to_city':
+        show_city_selection(bot, call.message.chat.id, call.message.message_id)
+
     # --- НАВИГАЦИЯ НАЗАД И ГЛАВНОЕ МЕНЮ ---
-    if call.data == 'back_to_main':
-        show_main_menu(bot, call.message.chat.id, call.message.message_id)
-        
+    elif call.data == 'back_to_main':
+        show_main_menu(bot, call.message.chat.id, user_id, user_city, call.message.message_id)
+
+    # --- ТАШКЕНТ ---
+    elif call.data == 'tashkent_checklists':
+        show_tashkent_checklists_menu(bot, call)
+    elif call.data == 'tashkent_marketing':
+        show_tashkent_marketing_menu(bot, call)
+    elif call.data == 'back_to_tashkent_marketing':
+        show_tashkent_marketing_menu(bot, call)
+    elif call.data == 'tashkent_social_layouts':
+        show_tashkent_social_layouts_menu(bot, call)
+    elif call.data == 'tashkent_new_buildings':
+        show_tashkent_new_buildings_menu(bot, call)
+    elif call.data == 'tashkent_legal':
+        show_tashkent_legal_menu(bot, call)
+    elif call.data == 'tashkent_jk_nrg_bi':
+        show_tashkent_jk_placeholder(bot, call, "NRG BI")
+    elif call.data == 'tashkent_jk_al_bina':
+        show_tashkent_jk_placeholder(bot, call, "AL-BINA")
+
+    # Kostanay-only menus: ignore if user is in Tashkent
+    elif get_user_city(user_id, user_city) == config.CITY_TASHKENT:
+        pass
+
     # Назад из L2 в L1
     elif call.data == 'back_to_novice_l1': show_novice_menu_l1(bot, call)
     elif call.data == 'back_to_marketing_l1': show_marketing_menu_l1(bot, call)
