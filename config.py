@@ -1,3 +1,4 @@
+
 import os
 from dotenv import load_dotenv
 
@@ -7,8 +8,13 @@ load_dotenv()
 # --- ТОКЕН И КОД ДОСТУПА ---
 # Бот сначала ищет токен в .env файле. 
 # Если его там нет (например, на сервере), он берет его из системных переменных.
-BOT_TOKEN = os.getenv('BOT_TOKEN', 'ВАШ_ТОКЕН_ЗДЕСЬ_ЕСЛИ_НЕТ_ENV') 
-ACCESS_CODE = '123'
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+if not BOT_TOKEN:
+    raise ValueError('BOT_TOKEN не задан. Укажите его в файле .env')
+ACCESS_CODE = '1122'
+# Для локального запуска оставьте пустым. На сервере, если нужен SOCKS:
+# PROXY_URL=socks5h://127.0.0.1:40000
+PROXY_URL = os.getenv('PROXY_URL', '')
 
 # --- ССЫЛКИ ДЛЯ МЕНЮ ---
 
@@ -18,7 +24,7 @@ SCORE_HOWTO_URL = 'https://docs.google.com/presentation/d/1A2Bob-WamUJ8gguTDFL9x
 
 # Загородная недвижимость (6)
 RURAL_CHECKLIST_URL = 'https://drive.google.com/uc?export=download&id=1aA9cPnqGPWiKQzLPnjiLlUBg14uNDKLx'
-RURAL_RK_PLOTS_URL = 'https://aisgzk.kz/aisgzk/ru/content/maps/'
+RURAL_RK_PLOTS_URL = 'https://map.gov4c.kz/egkn/'
 RURAL_KOSTANAY_PLAN_URL = 'https://drive.google.com/drive/folders/1VVibgUyGKzGoNjED8fs9el8nvtBulOfD'
 
 # Обучение для новичков (1) - Уровень 1
@@ -65,7 +71,7 @@ MORTGAGE_SCRIPT_URL = 'https://docs.google.com/spreadsheets/d/1oD8vdZI0SEz71Ik8v
 BANK_COMMISSION_URL = 'https://drive.google.com/file/d/1eilDwscq_zGIZr2mDz9O0_telrjR8Guv/view?usp=sharing'
 APPRAISAL_COMPANIES_URL = 'https://docs.google.com/spreadsheets/d/17N6xtUHzd90aFNtw1g2zQTSeMQKass9F/edit?usp=sharing&ouid=118107650400863849368&rtpof=true&sd=true'
 KAZAKHSTAN_BANK_CHEAT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1p60JJg5j-jr1q2NZf72azbme7WxCMU1k/edit?gid=884968483#gid=884968483'
-COLLATERAL_POLICY_URL = 'https://docs.google.com/spreadsheets/d/1-3kovPzTfgEELi_irVdlOf8kMFKWELWU/edit?gid=1627687761#gid=1627687761'
+COLLATERAL_POLICY_URL = 'https://docs.google.com/spreadsheets/d/1SFnfNR2-_colMOe2030AVtlhzYFhHMT5/edit?gid=602142262#gid=602142262'
 CONTACT_DATA_URL = 'https://docs.google.com/spreadsheets/d/151QM0wAEkAyQvy5hR3DAibSvyHT3AH0l/edit?gid=5669678#gid=5669678'
 
 # Ипотечный блок (4) - Уровень 2 (Обучение для ипотечного брокера)
@@ -104,11 +110,11 @@ DOCS_DEPOSIT_AGREEMENT_URL = 'https://drive.google.com/uc?export=download&id=1ip
 DOCS_PURCHASE_AGREEMENT_URL = 'https://drive.google.com/uc?export=download&id=1PAjGqoOM_NTWK2hAa8e2uS_XGGLeBKh7'
 
 # 2.2. Агентские договоры -> На покупателя (L3)
-AGREEMENT_BUYER_URL = 'https://drive.google.com/uc?export=download&id=1bDAp4y83x_spTgA0VztnzAnXv7zB-vLQ'
+AGREEMENT_BUYER_URL = 'https://docs.google.com/document/d/1FPihJV9NzeUCu0QcFFPlhDfbSalSJAMX/edit'
 INSPECTION_REGISTER_YASTREBOVA_URL = 'https://drive.google.com/uc?export=download&id=17UOoHNqVLDt0dIs_oG63IQ5lOEL52wAq'
 
 # 2.2. Агентские договоры -> На продавца (L3)
-AGREEMENT_SELLER_URL = 'https://drive.google.com/uc?export=download&id=1q_c3nNnrVALFgflCip6HcOWtAoZuI0B9'
+AGREEMENT_SELLER_URL = 'https://docs.google.com/document/d/13jcPj9UdkGcolCD2fxSd0wkkI9FF9XDa/edit'
 KEY_TRANSFER_AGREEMENT_URL = 'https://drive.google.com/uc?export=download&id=1Yf3feQrQBUUMdFJtNVfiSuxDVADrLpLz'
 ANNEX_1_SELLER_URL = 'https://drive.google.com/uc?export=download&id=1Bhe_qvUTWsCKyFf_pVwu9V_tEvQtbRvF'
 EXCLUSIVE_AGREEMENT_SELLER_URL = 'https://drive.google.com/uc?export=download&id=1xL42T7IZeKiybpvNZ69cwbSMoAfbJCbG'
@@ -144,3 +150,35 @@ INSTRUCTIONS_SIGNING_DOCS_URL = 'https://drive.google.com/file/d/1Sth5lz7TXywEFC
 ONLINE_SIGNING_MEMO_URL = 'https://drive.google.com/file/d/1x5e3--AaZXNGu2PYip9tqe_u1sE6Oslt/view?usp=drive_link'
 LEGAL_DEPT_APPLICATION_URL = 'https://drive.google.com/file/d/1AiNsA_3nuXsikcuPfT7I6lzP2dRIpF_4/view?usp=share_link'
 PROPERTY_SALE_INCOME_URL = 'https://docs.google.com/document/d/1PChGlW7NU-Fd6rhdsrV_FDtEO76ePkDu/edit'
+
+# --- ГОРОДА ---
+CITY_KOSTANAY = 'kostanay'
+CITY_TASHKENT = 'tashkent'
+
+
+# --- ТАШКЕНТ ---
+
+TASHKENT_PRICELIST_URL = 'https://docs.google.com/spreadsheets/d/1aUYY7RzpyagNxrWXSANQCCgFfu7WhbaH2lrFKqWYKko/edit?gid=0#gid=0'
+TASHKENT_UTP_URL = 'https://docs.google.com/spreadsheets/d/1bkS1Nzmh9E1TN7YqL9VjnSjiC9v_eS5d/edit?gid=348717645#gid=348717645'
+
+TASHKENT_CHECKLIST_COMMERCE_URL = 'https://docs.google.com/spreadsheets/d/1A-BFcMc1DFQIHn99xADhTQGKUqX-7Tys/edit?gid=1836360964#gid=1836360964'
+TASHKENT_CHECKLIST_RURAL_URL = 'https://docs.google.com/document/d/1IFiB1SI-v2eV0VHLXilrNW4ZQ4VYtI0o/edit#heading=h.30j0zll'
+TASHKENT_CHECKLIST_SECONDARY_URL = 'https://docs.google.com/document/d/1eeL-NZyEuvoHPJlKLxCiAB4jIMLLbG40/edit#heading=h.gjdgxs'
+TASHKENT_CHECKLIST_BUYER_URL = 'https://docs.google.com/document/d/1uYKQV5uEMaVbiTFD5Dz8M2rM7gtnPF4h/edit'
+
+TASHKENT_MARKETING_CLIENTS_URL = 'https://docs.google.com/presentation/d/15YTVsZc4ZA2T2PkjjSHo-DklSsLWmBcn/edit?slide=id.p26#slide=id.p26'
+TASHKENT_MARKETING_INFLOW_URL = 'https://docs.google.com/presentation/d/1nKjsAYFe9G6Fjs3QU8tM0cF60tU0SF5e/edit?slide=id.p18#slide=id.p18'
+TASHKENT_MARKETING_PASTE_LAYOUTS_URL = 'https://docs.google.com/presentation/d/19c-NNYLpPDWj2dL4WLsjXGaXm98Wm9qj/edit?slide=id.p65#slide=id.p65'
+TASHKENT_MARKETING_SOCIAL_URLS = [
+    'https://www.emrm.ru/storage/content/69aa8ed39a4096486b4eeefd',
+    'https://www.emrm.ru/storage/content/69f0a02e2841b97fc79898f6?folder=69f1779b2841b97fc7989a8d',
+    'https://www.emrm.ru/storage/content/6a1ea0512841b97fc7991456?folder=6a1ea0772841b97fc7991463',
+]
+TASHKENT_REVIEWS_URL = 'https://tashkent.etagi.com/feedback/'
+
+TASHKENT_AGREEMENT_SELLER_URL = 'https://docs.google.com/document/d/1aKBlH_qjzwMU_uukuIAItp8-SsbHC2Oa/edit?usp=sharing&ouid=103131565268500743791&rtpof=true&sd=true'
+TASHKENT_AGREEMENT_BUYER_URL = 'https://docs.google.com/document/d/1XCl-kAUMmMtRDNCD03Yz_JJ6Bo8vCd58/edit?usp=sharing&ouid=103131565268500743791&rtpof=true&sd=true'
+TASHKENT_LEASE_AGREEMENT_URL = 'https://docs.google.com/document/d/18BN2jy3ZnlgpSem1QxoXXgTkaTukR2QV/edit?usp=sharing&ouid=103131565268500743791&rtpof=true&sd=true'
+TASHKENT_ACT_SERVICES_URL = 'https://docs.google.com/document/d/16_hLhwoEhV_pDSVGPOAQON_qLHLTHB7M/edit'
+TASHKENT_ACT_INSPECTION_URL = 'https://docs.google.com/document/d/1aq2ai0h-TdmCTLfixOOkyT8r967LK-Zh/edit'
+TASHKENT_DEPOSIT_AGREEMENT_URL = 'https://docs.google.com/document/d/1emK0qAmHZusxlsJvBwDXgbRv0nEm6bVr/edit'
