@@ -87,19 +87,112 @@ DEAL_MAP_HALYK_URL = 'https://docs.google.com/document/d/18VRlOQ8VwKHo9sckxEm4Vt
 # Новостройки (5)
 NEW_BUILDINGS_GENERAL_INFO_URL = 'https://docs.google.com/spreadsheets/d/1oLalulPKQSdw7XDgqEgyXFs8DK4N4gNxrmJsuDGSJtg/edit?gid=0#gid=0'
 NEW_BUILDINGS_INVESTOR_URL = 'https://docs.google.com/spreadsheets/d/1k8AI8jUbfZe1qNpjTkBDetkQqVT9UkfO/edit?gid=1270461869#gid=1270461869'
+# act_group: with_act | without_act
+# board_url / info_url — только если есть реальная ссылка (кнопка Прайс не используется)
 NEW_BUILDINGS_DATA = {
-    "jk_altynsarina": {"name": "ЖК Алтынсарина 228Б", "board_url": "https://docs.google.com/spreadsheets/d/1pr5LJH98dm-aa7gRs5b8myykYwnSl86vy7aw65N3XX0/edit?gid=0#gid=0", "info_url": "https://drive.google.com/drive/u/0/folders/1su2YlEDcVCSGfjnHx_Y9nazaLrNVE69n"},
-    "jk_kairbekova": {"name": "ЖК Каирбекова 83", "board_url": "https://docs.google.com/spreadsheets/d/1Pd3AVYmbEsVvsidAmkr32Hj0jMFWOnOPIxcd--fuCio/edit?gid=0#gid=0", "info_url": "https://drive.google.com/drive/u/0/folders/1rwBI0wpAk6PuZMn5j7RqNPMvymImW1bd"},
-    "jk_green_park": {"name": "ЖК Green Park", "board_url": "https://docs.google.com/spreadsheets/d/1WpYLCyu_QF3DAbq3nwAmeqiKjXivRiUFkbBzyJOtUQk/edit?gid=0#gid=0", "info_url": "https://drive.google.com/drive/u/0/folders/1H-gOFsIKIHdq1xWypdPTuyqxy67W6hip"},
-    "jk_vasilievsky": {"name": "ЖК Васильевский", "board_url": "https://docs.google.com/spreadsheets/d/10pE-52-JRBeKQkmElXJ0trdX5vFL_QkhEsiiUM4CBP0/edit?gid=0#gid=0", "info_url": "https://drive.google.com/drive/u/0/folders/1TsCMpSODoYUZf0NOZql1TKxS3BoY8VRv"},
-    "jk_kievskaya": {"name": "ЖК Киевская 7/2", "board_url": "https://docs.google.com/spreadsheets/d/1jDfWHfLu1W-DKI4eKUKIzJd7om7fm55V/edit?gid=1347023797#gid=1347023797", "info_url": "https://drive.google.com/drive/folders/1pdraXY66JL3wo3hu9qDg4Dmjntzu7sWZ"},
-    "jk_park_house": {"name": "ЖК Park House", "board_url": "https://docs.google.com/spreadsheets/d/1cT2EjSvhw8qKaVe7s_3PYFEnFMRlPxPpesWuN5wkyUo/edit?gid=0#gid=0", "info_url": "https://drive.google.com/drive/u/0/folders/1xQuAL9P3dftPaSqgJDG_Vzd9yUQW4OLv"},
-    "jk_pushkina": {"name": "ЖК Пушкина 1 и 3", "info_url": "https://drive.google.com/drive/folders/14NPEDsKg_smNp11fbHzwa4xs7ErPiERA"},
-    "jk_rabata": {"name": "ЖК на Рабате",  "info_url": "https://drive.google.com/drive/folders/1Q8wKtuB76WT-wwyyqZVckxTPfkNqYKfN"},
-    "jk_gagarin": {"name": "ЖК Гагарин Парк", "board_url": "https://docs.google.com/spreadsheets/d/1VsRg7EoGmzChbC9Ow082nz5SLsnohqS6YWeYaeRLzQs/edit?gid=0#gid=0", "info_url": "https://drive.google.com/drive/folders/1cm2o8NVBybbnSd5TbeiOJRR2Xs0XgsOc", "price_url": "https://docs.google.com/spreadsheets/d/1BckXledXwTeHAMs-LqA52fB69DlAbfhi3mx6MFng_0M/edit?gid=0#gid=0"},
-    "jk_kerei": {"name": "ЖК Керей комфорт", "board_url": "https://docs.google.com/spreadsheets/d/1VOEwx4-0LHBV-DxN_XASCktIIGLpJCajB-6MGC11q7M/edit?gid=0#gid=0", "info_url": "https://drive.google.com/drive/folders/1P8lWG6qO8P8qn_LiXkGJI3wlqT_YR4Uj"},
-    "jk_tumar_comm": {"name": "Коммерция Тумар Резидентс", "info_url": "https://drive.google.com/drive/folders/1D1m7wSdAeBIKdnZl1v9XQxgJsI8Bpqi1"},
-    "jk_tumar_3": {"name": "Тумар Резиденс 3", "info_url": "https://drive.google.com/drive/folders/1UHfuapK0Z5-P-UmkWfoVEebg_avEg7V-", "price_url": "https://docs.google.com/document/d/1g3nJLlWXYcITpDhX1bFTpXcz3dtjXO_s/edit"},
+    # --- С актом ввода ---
+    "jk_kairbekova": {
+        "name": "ЖК Каирбекова 83",
+        "act_group": "with_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1Pd3AVYmbEsVvsidAmkr32Hj0jMFWOnOPIxcd--fuCio/edit?gid=0#gid=0",
+        "info_url": "https://drive.google.com/drive/u/0/folders/1rwBI0wpAk6PuZMn5j7RqNPMvymImW1bd",
+    },
+    "jk_green_park": {
+        "name": "ЖК Green Park",
+        "act_group": "with_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1WpYLCyu_QF3DAbq3nwAmeqiKjXivRiUFkbBzyJOtUQk/edit?gid=0#gid=0",
+        "info_url": "https://drive.google.com/drive/u/0/folders/1H-gOFsIKIHdq1xWypdPTuyqxy67W6hip",
+    },
+    "jk_pushkina": {
+        "name": "ЖК Пушкина 1 и 3",
+        "act_group": "with_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1Wqsdhw9ewOO0fAts4WSpPW1iFpUKM99ApkZo3AgZa_U/edit?gid=0#gid=0",
+        "info_url": "https://drive.google.com/drive/folders/14NPEDsKg_smNp11fbHzwa4xs7ErPiERA",
+    },
+    "jk_khan_tower": {
+        "name": "ЖК Хан Тауэр (на Рабате)",
+        "act_group": "with_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/145Ko4Z1SmDnpKPiB0Tg3bhFPkpbp2PJt/edit?gid=354259441#gid=354259441",
+        "info_url": "https://drive.google.com/drive/folders/1Q8wKtuB76WT-wwyyqZVckxTPfkNqYKfN",
+    },
+    "jk_kerei": {
+        "name": "ЖК Керей комфорт",
+        "act_group": "with_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1VOEwx4-0LHBV-DxN_XASCktIIGLpJCajB-6MGC11q7M/edit?gid=0#gid=0",
+        "info_url": "https://drive.google.com/drive/folders/1P8lWG6qO8P8qn_LiXkGJI3wlqT_YR4Uj",
+    },
+    "jk_torgai": {
+        "name": "ЖК Торгай",
+        "act_group": "with_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1ikdOKmIA-nXPT3-RDna3xwFg0Oek2Xya87-FvbTJzxk/edit?gid=0#gid=0",
+        "info_url": "https://drive.google.com/drive/u/0/folders/18bGCUsoue9JJO9s9wkIZ0mSeAMYj17Is",
+    },
+    "jk_vse_svoi": {
+        "name": "ЖК Все свои",
+        "act_group": "with_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1WzeoJB7qtoWbewaSBKgACNZB27N49B2mzOAC2U1KziM/edit?gid=0#gid=0",
+        "info_url": "https://drive.google.com/drive/folders/1wUBdqe_pbH4soNrnkg7JuDqIfJS6uCnI",
+    },
+    "jk_teatralny_2": {
+        "name": "ЖК Театральный 2",
+        "act_group": "with_act",
+        "info_url": "https://drive.google.com/drive/folders/1peLJO-9FTEKB3uA2Fsnz__cGohtJxggr",
+    },
+    # --- Без акта ввода ---
+    "jk_nazarbaeva": {
+        "name": "ЖК Назарбаева",
+        "act_group": "without_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1GkS85825C7qJhU5xLuLkZQavi4YwA6aB/edit?rtpof=true",
+        "info_url": "https://drive.google.com/drive/folders/124J109FPRVqOaI0xoTjKD0ww6Lh-y43y",
+    },
+    "jk_centralny_2": {
+        "name": "ЖК Центральный 2",
+        "act_group": "without_act",
+        "info_url": "https://drive.google.com/drive/folders/1tvVnHsCgJ54bZ8UL5AnRiBffu6Y7bjB7",
+    },
+    "jk_arman_city": {
+        "name": "ЖК Арман Сити",
+        "act_group": "without_act",
+        "info_url": "https://drive.google.com/drive/folders/1Dj7bkSeQumglQNAi8JSgGo4l3pWJmOI5",
+    },
+    "jk_gagarin": {
+        "name": "Гагарин парк",
+        "act_group": "without_act",
+        "info_url": "https://drive.google.com/drive/folders/1lQYcTJ-rjG2CyblmiBlon6GGXLPKmm-g?usp=drive_link",
+    },
+    "jk_gagarin_2": {
+        "name": "Гагарин парк 2",
+        "act_group": "without_act",
+        "info_url": "https://drive.google.com/drive/folders/1lQYcTJ-rjG2CyblmiBlon6GGXLPKmm-g?usp=drive_link",
+    },
+    "jk_zheti_kazyna": {
+        "name": "ЖК Жети Казына",
+        "act_group": "without_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1jkqfoidwRok0BGsxegXdO2dovbnRqXKhWm17CZz9724/edit?pli=1&gid=1313980790#gid=1313980790",
+        "info_url": "https://drive.google.com/drive/u/0/folders/1KLw1pVE7N5OeLv3LIuR01TFgcqhxizo8",
+    },
+    "jk_forest_park": {
+        "name": "Форест Парк",
+        "act_group": "without_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1tbDp2pOIS_7VHzAgmYU3hGbx747jI7gq5yp3ByZZPAY/edit?gid=0#gid=0",
+        "info_url": "https://drive.google.com/drive/folders/1H0z-nvz-OnTYAsWeUN5NREEHPTjJHkko",
+    },
+    "jk_tumar_3": {
+        "name": "Тумар Резиденс 3",
+        "act_group": "without_act",
+        "info_url": "https://drive.google.com/drive/folders/1UHfuapK0Z5-P-UmkWfoVEebg_avEg7V-",
+    },
+    "jk_turan": {
+        "name": "ЖК TURAN APARTAMENTS",
+        "act_group": "without_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1mzTqRd43pZVYb2_Be6AQKZyA5J5Y2DV6L8H_6UgvC5A/edit?gid=0#gid=0",
+    },
+    "jk_vasilievsky": {
+        "name": "ЖК Васильевский",
+        "act_group": "without_act",
+        "board_url": "https://docs.google.com/spreadsheets/d/1ILMZ4h1LOZ23L84WT6ss2YPQe89KYG6t6pEfND1Ebxo/edit",
+        "info_url": "https://drive.google.com/drive/u/0/folders/1TsCMpSODoYUZf0NOZql1TKxS3BoY8VRv",
+    },
 }
 
 # --- ССЫЛКИ ДЛЯ ЮРИДИЧЕСКОГО БЛОКА (2) ---

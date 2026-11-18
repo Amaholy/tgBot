@@ -399,52 +399,55 @@ def create_deal_map_menu_l2():
 def create_new_buildings_menu_l1():
     """Подменю Текущие новостройки (Уровень 1)."""
     markup = types.InlineKeyboardMarkup(row_width=1)
-    
-    # Общие ссылки
     markup.add(
         types.InlineKeyboardButton("Общая информация о жилых комплексах", url=config.NEW_BUILDINGS_GENERAL_INFO_URL),
         types.InlineKeyboardButton("Квартира от ИНВЕСТОРА", url=config.NEW_BUILDINGS_INVESTOR_URL),
-
-    )
-    
-    # Кнопки для конкретных ЖК
-    for key, data in config.NEW_BUILDINGS_DATA.items():
-        markup.add(types.InlineKeyboardButton(data["name"], callback_data=f'jk_detail_{key}'))
-        
-    # Кнопки навигации
-    markup.add(
+        types.InlineKeyboardButton("✅ С актом ввода", callback_data='nb_with_act'),
+        types.InlineKeyboardButton("🏗️ Без акта ввода", callback_data='nb_without_act'),
         types.InlineKeyboardButton("⬅️ Назад", callback_data='back_to_main'),
-        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main')
+        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main'),
     )
     return markup
 
-def create_jk_detail_menu_l2(jk_key):
-    """Подменю для конкретного ЖК (Уровень 2)."""
-    jk_data = config.NEW_BUILDINGS_DATA.get(jk_key)
-    
-    if not jk_data:
-        markup = types.InlineKeyboardMarkup(row_width=1)
-        markup.add(
-            types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main')
-        )
-        return markup
-        
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    
-    # Кнопка Шахматка
-    if "board_url" in jk_data and jk_data["board_url"]:
-        markup.add(types.InlineKeyboardButton("📊 Шахматка", url=jk_data["board_url"]))
-    
-    # Кнопка Информация
-    if "info_url" in jk_data and jk_data["info_url"]:
-        markup.add(types.InlineKeyboardButton("📝 Информация по новостройке", url=jk_data["info_url"]))
-        
-    # Новая кнопка Прайс цены (появится только если есть ссылка в конфиге)
-    if "price_url" in jk_data and jk_data["price_url"]:
-        markup.add(types.InlineKeyboardButton("💰 Прайс цены", url=jk_data["price_url"]))
 
+def create_new_buildings_group_menu(act_group: str):
+    """Список ЖК внутри раздела с актом / без акта."""
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    for key, data in config.NEW_BUILDINGS_DATA.items():
+        if data.get("act_group") != act_group:
+            continue
+        if not data.get("board_url") and not data.get("info_url"):
+            continue
+        markup.add(types.InlineKeyboardButton(data["name"], callback_data=f'jk_detail_{key}'))
     markup.add(
         types.InlineKeyboardButton("⬅️ Назад", callback_data='back_to_new_buildings_l1'),
-        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main')
+        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main'),
+    )
+    return markup
+
+
+def create_jk_detail_menu_l2(jk_key):
+    """Подменю для конкретного ЖК: только шахматка и/или информация."""
+    jk_data = config.NEW_BUILDINGS_DATA.get(jk_key)
+
+    if not jk_data:
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup.add(types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main'))
+        return markup
+
+    markup = types.InlineKeyboardMarkup(row_width=1)
+
+    if jk_data.get("board_url"):
+        markup.add(types.InlineKeyboardButton("📊 Шахматка", url=jk_data["board_url"]))
+
+    if jk_data.get("info_url"):
+        markup.add(types.InlineKeyboardButton("📝 Информация по новостройке", url=jk_data["info_url"]))
+
+    back_callback = (
+        'nb_with_act' if jk_data.get("act_group") == "with_act" else 'nb_without_act'
+    )
+    markup.add(
+        types.InlineKeyboardButton("⬅️ Назад", callback_data=back_callback),
+        types.InlineKeyboardButton("🏠 Главное меню", callback_data='back_to_main'),
     )
     return markup
