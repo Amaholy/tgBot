@@ -262,21 +262,34 @@ def show_new_buildings_menu_l1(bot: TeleBot, call: types.CallbackQuery):
     chat_id = call.message.chat.id
     message_id = call.message.message_id
     new_buildings_l1_text = (
-        "Вы в разделе **5. Текущие новостройки**. Выберите комплекс или общую информацию:\n"
-        "*(Нажмите на название ЖК, чтобы увидеть шахматку и информацию)*"
+        "Вы в разделе **5. Текущие новостройки**.\n"
+        "Выберите общую информацию или раздел по акту ввода."
     )
     markup = keyboards.create_new_buildings_menu_l1()
     bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=new_buildings_l1_text, reply_markup=markup, parse_mode='Markdown')
 
+
+def show_new_buildings_group_menu(bot: TeleBot, call: types.CallbackQuery, act_group: str):
+    """Показывает список ЖК с актом / без акта."""
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
+    if act_group == "with_act":
+        text = "Раздел **✅ С актом ввода**. Выберите жилой комплекс:"
+    else:
+        text = "Раздел **🏗️ Без акта ввода**. Выберите жилой комплекс:"
+    markup = keyboards.create_new_buildings_group_menu(act_group)
+    bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=text, reply_markup=markup, parse_mode='Markdown')
+
+
 def show_jk_detail_menu_l2(bot: TeleBot, call: types.CallbackQuery, jk_key: str):
-    """Показывает детальное меню для конкретного ЖК (Уровень 2)."""
+    """Показывает детальное меню для конкретного ЖК."""
     chat_id = call.message.chat.id
     message_id = call.message.message_id
     jk_name = config.NEW_BUILDINGS_DATA.get(jk_key, {}).get("name", "Неизвестный ЖК")
-    
-    jk_detail_text = f"Вы выбрали **{jk_name}**. Выберите: Шахматка (наличие квартир) или Подробная информация."
+
+    jk_detail_text = f"Вы выбрали **{jk_name}**."
     markup = keyboards.create_jk_detail_menu_l2(jk_key)
-    
+
     bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=jk_detail_text, reply_markup=markup, parse_mode='Markdown')
 
 def show_placeholder(bot: TeleBot, call: types.CallbackQuery):
@@ -397,6 +410,8 @@ def callback_handler(bot: TeleBot, call: types.CallbackQuery, user_authenticated
     elif call.data == 'back_to_marketing_l1': show_marketing_menu_l1(bot, call)
     elif call.data == 'back_to_mortgage_l1': show_mortgage_menu_l1(bot, call)
     elif call.data == 'back_to_new_buildings_l1': show_new_buildings_menu_l1(bot, call)
+    elif call.data == 'nb_with_act': show_new_buildings_group_menu(bot, call, 'with_act')
+    elif call.data == 'nb_without_act': show_new_buildings_group_menu(bot, call, 'without_act')
     elif call.data == 'back_to_legal_l1': show_legal_menu_l1(bot, call)
 
     # Назад из L3 в L2 (только для Агентских договоров)
